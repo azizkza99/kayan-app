@@ -44,18 +44,18 @@ export default function DemoForm() {
       return;
     }
 
+    const supabaseUrl = import.meta.env.VITE_SUPABASE_URL;
+    const supabaseKey = import.meta.env.VITE_SUPABASE_ANON_KEY;
+
+    // إذا كنا نعمل محلياً ولا توجد مفاتيح Supabase، نحاكي الإرسال بنجاح بسلاسة
+    if (!supabaseUrl || !supabaseKey) {
+      await new Promise((resolve) => setTimeout(resolve, 1000));
+      setState('success');
+      return;
+    }
+
     try {
-      const url = import.meta.env.VITE_SUPABASE_URL;
-      const key = import.meta.env.VITE_SUPABASE_ANON_KEY;
-
-      // إذا لم تتوفر مفاتيح Supabase محلياً، سيتم محاكاة الإرسال بنجاح بسلاسة تامة
-      if (!url || !key || url.includes('placeholder')) {
-        await new Promise((resolve) => setTimeout(resolve, 1000));
-        setState('success');
-        return;
-      }
-
-      const supabase = createClient(url, key);
+      const supabase = createClient(supabaseUrl, supabaseKey);
       const { error } = await supabase.from('demo_requests').insert(payload);
 
       if (error) {
@@ -66,9 +66,8 @@ export default function DemoForm() {
 
       setState('success');
     } catch (err) {
-      // حماية إضافية تمنع أي توقف أو شاشة بيضاء محلياً
-      await new Promise((resolve) => setTimeout(resolve, 1000));
-      setState('success');
+      setState('error');
+      setErrorMsg('Connection error. Please try again.');
     }
   };
 
