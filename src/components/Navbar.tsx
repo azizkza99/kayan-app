@@ -1,16 +1,19 @@
 import { useEffect, useState } from 'react';
 import { Menu, X, Sparkles } from 'lucide-react';
+import { useLanguage } from '@/i18n';
 
 const NAV_LINKS = [
-  { label: 'Capabilities', href: '#capabilities' },
-  { label: 'How it Works', href: '#how-it-works' },
-  { label: 'Security', href: '#security' },
-  { label: 'Contact', href: '#contact' },
+  { en: 'Capabilities', ar: 'الإمكانات', href: '#capabilities' },
+  { en: 'How it Works', ar: 'آلية العمل', href: '#how-it-works' },
+  { en: 'Security', ar: 'الأمان', href: '#security' },
+  { en: 'Contact', ar: 'تواصل معنا', href: '#contact' },
 ];
 
 export default function Navbar() {
   const [scrolled, setScrolled] = useState(false);
   const [mobileOpen, setMobileOpen] = useState(false);
+  const { lang } = useLanguage();
+  const demoLabel = lang === 'ar' ? 'اطلب عرضاً تجريبياً' : 'Request a Demo';
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 20);
@@ -50,7 +53,7 @@ export default function Navbar() {
                 href={link.href}
                 className="text-sm text-neutral-400 hover:text-white transition-colors duration-200 relative group"
               >
-                {link.label}
+                {link[lang]}
                 <span className="absolute -bottom-1 left-0 w-0 h-px bg-gold-400 group-hover:w-full transition-all duration-300" />
               </a>
             ))}
@@ -63,7 +66,7 @@ export default function Navbar() {
               className="group relative px-6 py-3 rounded-full bg-gradient-to-r from-gold-400 to-gold-500 text-obsidian-900 text-sm font-semibold overflow-hidden transition-all duration-300 hover:glow-gold-strong hover:scale-[1.03]"
             >
               <span className="relative z-10 flex items-center gap-2">
-                Request a Demo
+                {demoLabel}
               </span>
               <div className="absolute inset-0 bg-gradient-to-r from-gold-300 to-gold-400 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
             </a>
@@ -89,7 +92,7 @@ export default function Navbar() {
                 onClick={() => setMobileOpen(false)}
                 className="text-sm text-neutral-400 hover:text-white transition-colors duration-200"
               >
-                {link.label}
+                {link[lang]}
               </a>
             ))}
             <a
@@ -97,7 +100,7 @@ export default function Navbar() {
               onClick={() => setMobileOpen(false)}
               className="mt-2 px-6 py-3 rounded-full bg-gradient-to-r from-gold-400 to-gold-500 text-obsidian-900 text-sm font-semibold text-center"
             >
-              Request a Demo
+              {demoLabel}
             </a>
           </div>
         )}

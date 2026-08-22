@@ -1,7 +1,19 @@
 import { useEffect, useRef, useState } from 'react';
+import FloatingStars from './FloatingStars';
 
-const SPLINE_SCRIPT_URL = 'https://unpkg.com/@splinetool/viewer@1.9.48/build/spline-viewer.js';
+const SPLINE_SCRIPT_URL = 'https://cdn.spline.design/@splinetool/viewer@2.0.5/build/spline-viewer.js';
 const SPLINE_SCENE_URL = 'https://prod.spline.design/UtIGpUYDM8e0S-cl/scene.splinecode';
+
+declare global {
+  namespace JSX {
+    interface IntrinsicElements {
+      'spline-viewer': React.DetailedHTMLProps<
+        React.HTMLAttributes<HTMLElement> & { url?: string },
+        HTMLElement
+      >;
+    }
+  }
+}
 
 export default function SplineRobot() {
   const containerRef = useRef<HTMLDivElement>(null);
@@ -11,35 +23,39 @@ export default function SplineRobot() {
   useEffect(() => {
     let mounted = true;
 
-    // Check if spline-viewer is already defined (script already loaded)
-    if (customElements.get('spline-viewer')) {
-      setLoaded(true);
-      return;
-    }
+    const initTimer = setTimeout(() => {
+      if (!mounted) return;
 
-    // Check if script tag already exists
-    const existing = document.querySelector(`script[src="${SPLINE_SCRIPT_URL}"]`);
-    if (existing) {
-      existing.addEventListener('load', () => mounted && setLoaded(true));
-      existing.addEventListener('error', () => mounted && setFailed(true));
-      return;
-    }
+      if (customElements.get('spline-viewer')) {
+        setLoaded(true);
+        return;
+      }
 
-    const script = document.createElement('script');
-    script.type = 'module';
-    script.src = SPLINE_SCRIPT_URL;
-    script.async = true;
+      const existing = document.querySelector(`script[src="${SPLINE_SCRIPT_URL}"]`);
+      if (existing) {
+        existing.addEventListener('load', () => mounted && setLoaded(true));
+        existing.addEventListener('error', () => mounted && setFailed(true));
+        if (customElements.get('spline-viewer')) {
+          setLoaded(true);
+        }
+        return;
+      }
 
-    script.addEventListener('load', () => {
-      if (mounted) setLoaded(true);
-    });
-    script.addEventListener('error', () => {
-      if (mounted) setFailed(true);
-    });
+      const script = document.createElement('script');
+      script.type = 'module';
+      script.src = SPLINE_SCRIPT_URL;
+      script.async = true;
 
-    document.head.appendChild(script);
+      script.addEventListener('load', () => {
+        if (mounted) setLoaded(true);
+      });
+      script.addEventListener('error', () => {
+        if (mounted) setFailed(true);
+      });
 
-    // Safety timeout — if the script doesn't load in 12s, show fallback
+      document.head.appendChild(script);
+    }, 150);
+
     const timeout = setTimeout(() => {
       if (mounted && !loaded) {
         setFailed(true);
@@ -48,6 +64,7 @@ export default function SplineRobot() {
 
     return () => {
       mounted = false;
+      clearTimeout(initTimer);
       clearTimeout(timeout);
     };
   }, [loaded]);
@@ -55,37 +72,34 @@ export default function SplineRobot() {
   return (
     <div
       ref={containerRef}
-      className="relative w-full h-full rounded-3xl overflow-hidden glass-strong glow-gold"
-      style={{ minHeight: '420px' }}
+      className="relative w-full h-full rounded-[2rem] overflow-hidden glass border border-gold-400/30 shadow-2xl bg-[#111111] transform-gpu group"
+      style={{ minHeight: 'min(420px, 100vw)' }}
     >
-      {/* Ambient glow background */}
-      <div className="absolute inset-0 radial-glow pointer-events-none" />
+      {/* 🌟 1. طبقة النجوم التفاعلية الذكية */}
+      <FloatingStars />
 
-      {/* Animated border ring */}
-      <div className="absolute inset-0 rounded-3xl pointer-events-none">
-        <div className="absolute inset-0 rounded-3xl border border-gold-400/20" />
-        <div className="absolute -inset-px rounded-3xl border border-gold-400/5 animate-glow-pulse" />
-      </div>
+      {/* Ambient Gold Glow Background Effect */}
+      <div className="absolute inset-0 bg-gradient-to-tr from-gold-400/[0.05] via-transparent to-gold-600/[0.03] pointer-events-none" />
 
       {/* Loading state */}
       {!loaded && !failed && (
-        <div className="absolute inset-0 flex flex-col items-center justify-center gap-4 z-10">
+        <div className="absolute inset-0 flex flex-col items-center justify-center gap-4 z-20 bg-[#111111]">
           <div className="relative">
             <div className="w-16 h-16 rounded-full border-2 border-gold-400/20" />
             <div className="absolute inset-0 w-16 h-16 rounded-full border-t-2 border-gold-400 animate-spin" />
           </div>
-          <p className="text-sm text-neutral-400 tracking-wide animate-fade-in">
-            Initializing concierge...
+          <p className="text-xs font-mono uppercase tracking-[0.2em] text-gold-400/80 animate-pulse">
+            INITIALIZING CORE...
           </p>
         </div>
       )}
 
       {/* Fallback state */}
       {failed && (
-        <div className="absolute inset-0 flex flex-col items-center justify-center gap-3 z-10 p-8">
-          <div className="w-20 h-20 rounded-full bg-gradient-to-br from-gold-400/20 to-gold-600/10 flex items-center justify-center glow-gold">
+        <div className="absolute inset-0 flex flex-col items-center justify-center gap-3 z-20 p-8 bg-[#111111]">
+          <div className="w-16 h-16 rounded-full bg-gold-400/10 border border-gold-400/30 flex items-center justify-center">
             <svg
-              className="w-10 h-10 text-gold-400"
+              className="w-8 h-8 text-gold-400"
               fill="none"
               viewBox="0 0 24 24"
               stroke="currentColor"
@@ -94,23 +108,34 @@ export default function SplineRobot() {
               <path
                 strokeLinecap="round"
                 strokeLinejoin="round"
+                strokeWidth={1.5}
                 d="M12 18.75a6 6 0 006-6v-1.5M12 18.75a6 6 0 01-6-6v-1.5M12 18.75V12m0 0a3 3 0 003-3m-3 3a3 3 0 01-3-3m9 0a3 3 0 00-3-3M6 6a3 3 0 013-3m6 0a3 3 0 013 3M12 12v6m0-6V9"
               />
             </svg>
           </div>
-          <p className="text-neutral-300 text-center font-medium">AI Concierge</p>
-          <p className="text-neutral-500 text-sm text-center max-w-xs">
+          <p className="text-white text-sm font-semibold">AI Concierge</p>
+          <p className="text-neutral-400 text-xs text-center max-w-xs">
             Interactive 3D experience available on full load
           </p>
         </div>
       )}
 
-      {/* Spline viewer — only render once script is loaded */}
+      {/* Loaded 3D Spline Scene مع الفلتر الاحترافي لتحويل الخلفية إلى رمادي داكن */}
       {loaded && !failed && (
-        <spline-viewer
-          url={SPLINE_SCENE_URL}
-          style={{ width: '100%', height: '100%', background: 'transparent' }}
-        />
+        <div className="relative w-full h-full overflow-hidden z-10 transform-gpu opacity-0 animate-fade-in transition-opacity duration-700 [animation-fill-mode:forwards]">
+          <spline-viewer
+            url={SPLINE_SCENE_URL}
+            style={{
+              width: '100%',
+              height: '100%',
+              background: 'transparent',
+              // 🛠️ الفلتر السحري: يحول البياض إلى رمادي داكن فخم ويضبط المظهر العام
+              filter: 'grayscale(1) invert(0.92) contrast(1.15) brightness(0.9)',
+              transform: 'scale(1.3)',
+              transformOrigin: 'center',
+            }}
+          />
+        </div>
       )}
     </div>
   );

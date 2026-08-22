@@ -8,6 +8,7 @@ import {
   Building2,
   Landmark,
 } from 'lucide-react';
+import { useLanguage } from '@/i18n';
 
 type SubmitState = 'idle' | 'loading' | 'success' | 'error';
 
@@ -22,6 +23,10 @@ export default function DemoForm() {
   const [state, setState] = useState<SubmitState>('idle');
   const [errorMsg, setErrorMsg] = useState('');
   const [orgType, setOrgType] = useState<'corporate' | 'government'>('corporate');
+  const { lang } = useLanguage();
+  const t = lang === 'ar' ? {
+    eyebrow: 'طلب عرض تجريبي', title: 'شاهد كيان', highlight: 'قيد العمل.', description: 'احجز جلسة مخصصة مع فريق المؤسسات. سنوضح لك كيف يتوافق كيان مع مسارات العمل الخاصة بمؤسستك.', organizationType: 'نوع الجهة', corporate: 'شركة', government: 'جهة حكومية', fullName: 'الاسم الكامل', workEmail: 'البريد الإلكتروني للعمل', organization: 'اسم الجهة', teamSize: 'حجم الفريق', select: 'اختر النطاق', message: 'أخبرنا عن احتياجاتك', messagePlaceholder: 'ما العمليات المكتبية التي ترغب في أتمتتها؟', submit: 'اطلب عرضك التجريبي', submitting: 'جارٍ الإرسال...', required: 'مطلوب', success: 'تم استلام الطلب', successText: 'شكراً لك. سيتواصل معك فريق المؤسسات خلال يوم عمل لتنسيق العرض المخصص.', another: 'إرسال طلب آخر', consent: 'بإرسال الطلب، توافق على أن يتواصل معك فريق كيان. بياناتك مستضافة داخل المملكة ولا تتم مشاركتها.', errorRequired: 'يرجى تعبئة جميع الحقول المطلوبة.', errorSubmit: 'حدث خطأ أثناء إرسال طلبك. يرجى المحاولة مرة أخرى.', sizes: ['موظف إلى 50', '51 إلى 200 موظف', '201 إلى 1,000 موظف', 'أكثر من 1,000 موظف']
+  } : { eyebrow: 'Request a Demo', title: 'See Kayan AI in', highlight: 'action.', description: "Book a personalized walkthrough with our enterprise team. We'll show you how Kayan fits your organization's specific workflows.", organizationType: 'Organization type', corporate: 'Corporate', government: 'Government', fullName: 'Full name', workEmail: 'Work email', organization: 'Organization', teamSize: 'Team size', select: 'Select range', message: 'Tell us about your needs', messagePlaceholder: 'What back-office processes would you like Kayan AI to automate?', submit: 'Request your demo', submitting: 'Submitting...', required: 'required', success: 'Request received', successText: 'Thank you. Our enterprise team will reach out within one business day to schedule your personalized demo.', another: 'Submit another request', consent: 'By submitting, you agree to be contacted by the Kayan AI team. Your data is hosted in-Kingdom and never shared.', errorRequired: 'Please fill in all required fields.', errorSubmit: 'Something went wrong submitting your request. Please try again.', sizes: TEAM_SIZES };
 
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -40,7 +45,7 @@ export default function DemoForm() {
 
     if (!payload.full_name || !payload.work_email || !payload.organization || !payload.team_size) {
       setState('error');
-      setErrorMsg('Please fill in all required fields.');
+      setErrorMsg(t.errorRequired);
       return;
     }
 
@@ -59,12 +64,12 @@ export default function DemoForm() {
 
       if (error) {
         setState('error');
-        setErrorMsg('Something went wrong submitting your request. Please try again.');
+        setErrorMsg(t.errorSubmit);
         return;
       }
 
       setState('success');
-    } catch (err) {
+    } catch {
       await new Promise((resolve) => setTimeout(resolve, 1000));
       setState('success');
     }
@@ -81,16 +86,15 @@ export default function DemoForm() {
         <div className="flex flex-col items-center text-center mb-12 gap-4">
           <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full glass">
             <span className="text-xs font-medium text-gold-400 tracking-[0.15em] uppercase">
-              Request a Demo
+              {t.eyebrow}
             </span>
           </div>
           <h2 className="text-4xl lg:text-5xl font-bold text-white tracking-tight leading-tight">
-            See Kayan AI in
-            <span className="gold-text"> action.</span>
+            {t.title}
+            <span className="gold-text"> {t.highlight}</span>
           </h2>
           <p className="text-lg text-neutral-400 max-w-xl">
-            Book a personalized walkthrough with our enterprise team. We'll show you
-            how Kayan fits your organization's specific workflows.
+            {t.description}
           </p>
         </div>
 
@@ -107,15 +111,14 @@ export default function DemoForm() {
                 <div className="flex flex-col gap-2">
                   <h3 className="text-2xl font-semibold text-white">Request received</h3>
                   <p className="text-neutral-400 max-w-md">
-                    Thank you. Our enterprise team will reach out within one business day
-                    to schedule your personalized demo.
+                    {t.successText}
                   </p>
                 </div>
                 <button
                   onClick={() => setState('idle')}
                   className="text-sm text-gold-400 hover:text-gold-300 transition-colors font-medium"
                 >
-                  Submit another request
+                  {t.another}
                 </button>
               </div>
             ) : (
@@ -123,7 +126,7 @@ export default function DemoForm() {
                 {/* Organization type toggle */}
                 <div className="flex flex-col gap-3">
                   <label className="text-sm font-medium text-neutral-300">
-                    Organization type
+                    {t.organizationType}
                   </label>
                   <div className="grid grid-cols-2 gap-3">
                     <button
@@ -145,7 +148,7 @@ export default function DemoForm() {
                           orgType === 'corporate' ? 'text-white' : 'text-neutral-400'
                         }`}
                       >
-                        Corporate
+                        {t.corporate}
                       </span>
                     </button>
                     <button
@@ -167,7 +170,7 @@ export default function DemoForm() {
                           orgType === 'government' ? 'text-white' : 'text-neutral-400'
                         }`}
                       >
-                        Government
+                        {t.government}
                       </span>
                     </button>
                   </div>
@@ -177,7 +180,7 @@ export default function DemoForm() {
                 <div className="grid sm:grid-cols-2 gap-5">
                   <div className="flex flex-col gap-2">
                     <label htmlFor="full_name" className="text-sm font-medium text-neutral-300">
-                      Full name <span className="text-gold-400">*</span>
+                      {t.fullName} <span className="text-gold-400">*</span>
                     </label>
                     <input
                       id="full_name"
@@ -190,7 +193,7 @@ export default function DemoForm() {
                   </div>
                   <div className="flex flex-col gap-2">
                     <label htmlFor="work_email" className="text-sm font-medium text-neutral-300">
-                      Work email <span className="text-gold-400">*</span>
+                      {t.workEmail} <span className="text-gold-400">*</span>
                     </label>
                     <input
                       id="work_email"
@@ -207,7 +210,7 @@ export default function DemoForm() {
                 <div className="grid sm:grid-cols-2 gap-5">
                   <div className="flex flex-col gap-2">
                     <label htmlFor="organization" className="text-sm font-medium text-neutral-300">
-                      Organization <span className="text-gold-400">*</span>
+                      {t.organization} <span className="text-gold-400">*</span>
                     </label>
                     <input
                       id="organization"
@@ -220,7 +223,7 @@ export default function DemoForm() {
                   </div>
                   <div className="flex flex-col gap-2">
                     <label htmlFor="team_size" className="text-sm font-medium text-neutral-300">
-                      Team size <span className="text-gold-400">*</span>
+                      {t.teamSize} <span className="text-gold-400">*</span>
                     </label>
                     <select
                       id="team_size"
@@ -230,9 +233,9 @@ export default function DemoForm() {
                       className="px-5 py-3.5 rounded-2xl bg-obsidian-800 border border-white/10 text-white focus:border-gold-400/40 focus:outline-none focus:ring-2 focus:ring-gold-400/10 transition-all duration-300 [&>option]:bg-obsidian-800"
                     >
                       <option value="" disabled>
-                        Select range
+                        {t.select}
                       </option>
-                      {TEAM_SIZES.map((size) => (
+                      {t.sizes.map((size) => (
                         <option key={size} value={size}>
                           {size}
                         </option>
@@ -244,13 +247,13 @@ export default function DemoForm() {
                 {/* Message */}
                 <div className="flex flex-col gap-2">
                   <label htmlFor="message" className="text-sm font-medium text-neutral-300">
-                    Tell us about your needs
+                    {t.message}
                   </label>
                   <textarea
                     id="message"
                     name="message"
                     rows={4}
-                    placeholder="What back-office processes would you like Kayan AI to automate?"
+                    placeholder={t.messagePlaceholder}
                     className="px-5 py-3.5 rounded-2xl bg-obsidian-800 border border-white/10 text-white placeholder:text-neutral-600 focus:border-gold-400/40 focus:outline-none focus:ring-2 focus:ring-gold-400/10 transition-all duration-300 resize-none"
                   />
                 </div>
@@ -276,7 +279,7 @@ export default function DemoForm() {
                     </>
                   ) : (
                     <>
-                      Request your demo
+                      {t.submit}
                       <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform duration-300" />
                     </>
                   )}
@@ -284,8 +287,7 @@ export default function DemoForm() {
                 </button>
 
                 <p className="text-xs text-neutral-500 text-center">
-                  By submitting, you agree to be contacted by the Kayan AI team.
-                  Your data is hosted in-Kingdom and never shared.
+                  {t.consent}
                 </p>
               </form>
             )}

@@ -1,20 +1,118 @@
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Arabic:wght@400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&display=swap');
 
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
-html {
-  scroll-behavior: smooth;
-}
+@layer base {
+  :root {
+    color-scheme: dark;
+    --obsidian-950: #0a0a0a;
+    --obsidian-900: #121212;
+    --obsidian-800: #171717;
+    --ink-primary: #f5f5f5;
+    --ink-secondary: #d4d4d4;
+    --ink-muted: #a3a3a3;
+    --gold-highlight: #fef08a;
+    --gold: #fbbf24;
+    --gold-deep: #d97706;
+    --glass-border: rgba(255, 255, 255, 0.08);
+  }
 
-body {
-  background-color: #0a0a0a;
-  color: #e5e5e5;
-  font-family: 'Inter', system-ui, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  overflow-x: hidden;
+  html {
+    min-width: 320px;
+    background: var(--obsidian-950);
+    /* افتراضي إنجليزي */
+    font-family: 'Space Grotesk', ui-sans-serif, system-ui, sans-serif;
+    scroll-behavior: smooth;
+    scrollbar-color: #a16207 var(--obsidian-950);
+    scrollbar-width: thin;
+    text-size-adjust: 100%;
+    -webkit-text-size-adjust: 100%;
+  }
+
+  /* حل جذري: إذا كانت الصفحة عربية، اجعل الخط الأساسي كله IBM Plex Sans Arabic لضمان الفخامة المطلقة */
+  html[dir="rtl"] {
+    font-family: 'IBM Plex Sans Arabic', ui-sans-serif, system-ui, sans-serif;
+  }
+
+  body {
+    min-width: 320px;
+    margin: 0;
+    overflow-x: hidden;
+    background-color: var(--obsidian-950);
+    color: var(--ink-primary);
+    font-size: clamp(1rem, 0.97rem + 0.12vw, 1.125rem);
+    font-weight: 400;
+    line-height: 1.8;
+    text-rendering: optimizeLegibility;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  /* دعم الخط العربي صراحة في العناوين عند تفعيل اللغة العربية */
+  html[dir="rtl"] h1,
+  html[dir="rtl"] h2,
+  html[dir="rtl"] h3,
+  html[dir="rtl"] h4,
+  html[dir="rtl"] h5,
+  html[dir="rtl"] h6 {
+    font-family: 'IBM Plex Sans Arabic', ui-sans-serif, system-ui, sans-serif;
+  }
+
+  ::selection {
+    background: rgba(251, 191, 36, 0.28);
+    color: #fffef2;
+  }
+
+  :where(h1, h2, h3, h4, h5, h6) {
+    margin: 0;
+    color: var(--ink-primary);
+    font-family: 'Space Grotesk', ui-sans-serif, system-ui, sans-serif;
+    font-weight: 600;
+    letter-spacing: -0.02em;
+    line-height: 1.12;
+    text-wrap: balance;
+  }
+
+  h1 {
+    font-size: clamp(2.25rem, 1.5rem + 3.5vw, 5.5rem);
+  }
+
+  h2 {
+    font-size: clamp(1.875rem, 1.45rem + 2.25vw, 3.75rem);
+  }
+
+  h3 {
+    font-size: clamp(1.5rem, 1.25rem + 1.25vw, 2.375rem);
+  }
+
+  h4 {
+    font-size: clamp(1.25rem, 1.12rem + 0.7vw, 1.75rem);
+  }
+
+  p {
+    margin-block: 0;
+    color: var(--ink-secondary);
+    font-size: inherit;
+    line-height: 1.8;
+    overflow-wrap: break-word;
+    text-wrap: pretty;
+  }
+
+  p + p {
+    margin-block-start: 1.25em;
+  }
+
+  :where(a) {
+    color: inherit;
+    text-underline-offset: 0.16em;
+  }
+
+  :where(button) {
+    cursor: pointer;
+    font: inherit;
+  }
 }
 
 /* Custom scrollbar */
@@ -22,34 +120,35 @@ body {
   width: 8px;
 }
 ::-webkit-scrollbar-track {
-  background: #0a0a0a;
+  background: var(--obsidian-950);
 }
 ::-webkit-scrollbar-thumb {
-  background: #333;
+  background: #262626;
   border-radius: 4px;
+  transition: background 0.3s ease;
 }
 ::-webkit-scrollbar-thumb:hover {
-  background: #fbbf24;
+  background: var(--gold);
 }
 
 /* Glassmorphism utility */
 .glass {
-  background: rgba(18, 18, 18, 0.6);
+  background: rgba(18, 18, 18, 0.65);
   backdrop-filter: blur(20px);
   -webkit-backdrop-filter: blur(20px);
-  border: 1px solid rgba(255, 255, 255, 0.08);
+  border: 1px solid var(--glass-border);
 }
 
 .glass-strong {
-  background: rgba(14, 14, 14, 0.85);
+  background: rgba(14, 14, 14, 0.9);
   backdrop-filter: blur(24px);
   -webkit-backdrop-filter: blur(24px);
-  border: 1px solid rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.12);
 }
 
 /* Gold gradient text */
 .gold-text {
-  background: linear-gradient(135deg, #fbbf24 0%, #f59e0b 50%, #d97706 100%);
+  background: linear-gradient(135deg, var(--gold-highlight) 0%, var(--gold) 50%, var(--gold-deep) 100%);
   -webkit-background-clip: text;
   background-clip: text;
   -webkit-text-fill-color: transparent;
@@ -60,27 +159,32 @@ body {
   background: linear-gradient(
     90deg,
     transparent 0%,
-    rgba(251, 191, 36, 0.3) 50%,
+    rgba(251, 191, 36, 0.4) 50%,
     transparent 100%
   );
   background-size: 200% 100%;
   animation: shimmer 3s linear infinite;
 }
 
+@keyframes shimmer {
+  0% { background-position: -200% 0; }
+  100% { background-position: 200% 0; }
+}
+
 /* Glow utilities */
 .glow-gold {
-  box-shadow: 0 0 40px rgba(251, 191, 36, 0.15), 0 0 80px rgba(251, 191, 36, 0.05);
+  box-shadow: 0 0 40px rgba(251, 191, 36, 0.12), 0 0 80px rgba(251, 191, 36, 0.04);
 }
 
 .glow-gold-strong {
-  box-shadow: 0 0 60px rgba(251, 191, 36, 0.25), 0 0 120px rgba(251, 191, 36, 0.1);
+  box-shadow: 0 0 60px rgba(251, 191, 36, 0.22), 0 0 120px rgba(251, 191, 36, 0.08);
 }
 
 /* Grid pattern background */
 .grid-pattern {
   background-image:
-    linear-gradient(rgba(255, 255, 255, 0.03) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(255, 255, 255, 0.03) 1px, transparent 1px);
+    linear-gradient(rgba(255, 255, 255, 0.025) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255, 255, 255, 0.025) 1px, transparent 1px);
   background-size: 60px 60px;
 }
 
@@ -88,7 +192,7 @@ body {
 .radial-glow {
   background: radial-gradient(
     circle at 50% 50%,
-    rgba(251, 191, 36, 0.08) 0%,
+    rgba(251, 191, 36, 0.07) 0%,
     transparent 70%
   );
 }

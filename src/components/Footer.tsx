@@ -1,24 +1,27 @@
 import { Sparkles, Mail, Phone, MapPin, Linkedin, Twitter } from 'lucide-react';
+import { useLanguage } from '@/i18n';
 
 const FOOTER_LINKS = {
   Platform: [
-    { label: 'Capabilities', href: '#capabilities' },
-    { label: 'How it Works', href: '#how-it-works' },
-    { label: 'Security', href: '#security' },
+    { en: 'Capabilities', ar: 'الإمكانات', href: '#capabilities' },
+    { en: 'How it Works', ar: 'آلية العمل', href: '#how-it-works' },
+    { en: 'Security', ar: 'الأمان', href: '#security' },
   ],
   Company: [
-    { label: 'About', href: '#' },
-    { label: 'Contact', href: '#contact' },
-    { label: 'Request a Demo', href: '#contact' },
+    { en: 'About', ar: 'عن كيان', href: '#' },
+    { en: 'Contact', ar: 'تواصل معنا', href: '#contact' },
+    { en: 'Request a Demo', ar: 'طلب عرض تجريبي', href: '#contact' },
   ],
   Resources: [
-    { label: 'Documentation', href: '#' },
-    { label: 'Compliance', href: '#security' },
-    { label: 'Support', href: '#' },
+    { en: 'Documentation', ar: 'التوثيق', href: '#' },
+    { en: 'Compliance', ar: 'الامتثال', href: '#security' },
+    { en: 'Support', ar: 'الدعم', href: '#' },
   ],
 };
 
 export default function Footer() {
+  const { lang } = useLanguage();
+  const labels = lang === 'ar' ? { platform: 'المنصة', company: 'الشركة', resources: 'المصادر', description: 'مستشار الأعمال الذكي للنخبة من الشركات والجهات الحكومية في المملكة العربية السعودية. مستقل، سيادي، ومتواجد دائماً.' } : { platform: 'Platform', company: 'Company', resources: 'Resources', description: 'The elite AI Business Concierge for corporate enterprises and government entities in Saudi Arabia. Autonomous, sovereign, always on.' };
   return (
     <footer className="relative bg-obsidian-950 border-t border-white/5 overflow-hidden">
       <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[500px] h-[200px] bg-gold-400/5 rounded-full blur-[120px]" />
@@ -40,8 +43,7 @@ export default function Footer() {
             </div>
 
             <p className="text-sm text-neutral-500 leading-relaxed max-w-sm">
-              The elite AI Business Concierge for corporate enterprises and government
-              entities in Saudi Arabia. Autonomous, sovereign, always on.
+              {labels.description}
             </p>
 
             {/* Contact info */}
@@ -64,15 +66,15 @@ export default function Footer() {
           {/* Link columns */}
           {Object.entries(FOOTER_LINKS).map(([title, links]) => (
             <div key={title} className="flex flex-col gap-4">
-              <h4 className="text-sm font-semibold text-white tracking-wide">{title}</h4>
+              <h4 className="text-sm font-semibold text-white tracking-wide">{labels[title.toLowerCase() as 'platform' | 'company' | 'resources']}</h4>
               <ul className="flex flex-col gap-3">
                 {links.map((link) => (
-                  <li key={link.label}>
+                  <li key={link.en}>
                     <a
                       href={link.href}
                       className="text-sm text-neutral-500 hover:text-gold-400 transition-colors duration-200"
                     >
-                      {link.label}
+                      {link[lang]}
                     </a>
                   </li>
                 ))}
