@@ -18,16 +18,11 @@ const TEAM_SIZES = [
   '1,000+ employees',
 ];
 
-// دالة أمان لإنشاء اتصال Supabase فقط عند الحاجة وعدم الانهيار محلياً
-const getSupabaseClient = () => {
-  const url = import.meta.env.VITE_SUPABASE_URL;
-  const key = import.meta.env.VITE_SUPABASE_ANON_KEY;
-  
-  if (!url || !key || url.includes('placeholder')) {
-    return null;
-  }
-  return createClient(url, key);
-};
+// استخدام قيم افتراضية آمنة لمنع انهيار التطبيق محلياً نهائياً
+const supabaseUrl = import.meta.env.VITE_SUPABASE_URL || 'https://placeholder.supabase.co';
+const supabaseAnonKey = import.meta.env.VITE_SUPABASE_ANON_KEY || 'placeholder-key';
+
+const supabase = createClient(supabaseUrl, supabaseAnonKey);
 
 export default function DemoForm() {
   const [state, setState] = useState<SubmitState>('idle');
@@ -55,10 +50,8 @@ export default function DemoForm() {
       return;
     }
 
-    const supabase = getSupabaseClient();
-
-    // إذا لم تتوفر قاعدة البيانات محلياً، نقوم بمحاكاة إرسال ناجحة بسلاسة
-    if (!supabase) {
+    // إذا كنا نعمل محلياً بدون قاعدة بيانات حقيقية، نقوم بمحاكاة الإرسال بنجاح
+    if (supabaseUrl.includes('placeholder')) {
       await new Promise((resolve) => setTimeout(resolve, 1000));
       setState('success');
       return;
