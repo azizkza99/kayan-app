@@ -72,7 +72,8 @@ export default function SplineRobot() {
   return (
     <div
       ref={containerRef}
-      className="relative w-full h-full rounded-[2rem] overflow-hidden glass border border-gold-400/30 shadow-2xl bg-[#111111] transform-gpu group"
+      // 🚀 التعديل الجذري هنا: hidden على الجوال، و md:block يظهر فقط على اللابتوب والكمبيوتر لتسريع الجوال
+      className="hidden md:block relative w-full h-full rounded-[2rem] overflow-hidden glass border border-gold-400/30 shadow-2xl bg-[#111111] transform-gpu group"
       style={{ minHeight: 'min(420px, 100vw)' }}
     >
       {/* 🌟 1. طبقة النجوم التفاعلية الذكية */}
@@ -120,7 +121,7 @@ export default function SplineRobot() {
         </div>
       )}
 
-      {/* Loaded 3D Spline Scene مع الفلتر الاحترافي لتحويل الخلفية إلى رمادي داكن */}
+      {/* Loaded 3D Spline Scene */}
       {loaded && !failed && (
         <div className="relative w-full h-full overflow-hidden z-10 transform-gpu opacity-0 animate-fade-in transition-opacity duration-700 [animation-fill-mode:forwards]">
           <spline-viewer
@@ -129,7 +130,6 @@ export default function SplineRobot() {
               width: '100%',
               height: '100%',
               background: 'transparent',
-              // 🛠️ الفلتر السحري: يحول البياض إلى رمادي داكن فخم ويضبط المظهر العام
               filter: 'grayscale(1) invert(0.92) contrast(1.15) brightness(0.9)',
               transform: 'scale(1.3)',
               transformOrigin: 'center',
