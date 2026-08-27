@@ -28,14 +28,14 @@ npm ci
 npm run dev
 ```
 
-Copy the required public Supabase values into `.env.local`:
+The hosted concept uses a Supabase publishable key protected by row-level security. For a fork or staging project, override the public defaults in `.env.local`:
 
 ```bash
 VITE_SUPABASE_URL=https://your-project.supabase.co
 VITE_SUPABASE_PUBLISHABLE_KEY=your-public-publishable-key
 ```
 
-The legacy `VITE_SUPABASE_ANON_KEY` variable remains supported during migration. Never expose a Supabase secret key or service-role key in a `VITE_` variable.
+The legacy `VITE_SUPABASE_ANON_KEY` variable remains supported during migration. Publishable keys are designed for browser use; never expose a Supabase secret key or service-role key in a `VITE_` variable.
 
 ## Quality checks
 
@@ -48,7 +48,7 @@ npm audit --omit=dev
 
 ## Security notes
 
-The browser uses only a public Supabase key. Row-level security must remain enabled, and public roles should receive only the minimum table privileges required for form submission. Production deployments should add rate limiting, explicit retention rules, and a verified privacy notice before collecting real customer data.
+The browser uses only a public Supabase key. Row-level security must remain enabled, and public roles should receive only the minimum table privileges required for form submission. The current schema throttles repeat submissions from the same email address; a production service should also add network-level bot protection, explicit retention rules, and a verified privacy notice.
 
 ## Live concept
 

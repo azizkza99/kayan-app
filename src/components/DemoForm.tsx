@@ -11,9 +11,15 @@ import { useLanguage } from '@/i18n';
 
 type SubmitState = 'idle' | 'loading' | 'success' | 'error';
 
-const supabaseUrl = import.meta.env.VITE_SUPABASE_URL;
+// Supabase publishable keys are intentionally safe for public browser clients.
+// Environment variables can override these defaults for forks and staging projects.
+const DEFAULT_SUPABASE_URL = 'https://inzsgzqrkzahybzzxzqa.supabase.co';
+const DEFAULT_SUPABASE_PUBLISHABLE_KEY = 'sb_publishable_ISJXNrHlbkMYY3R4upaGBw_exADD978';
+const supabaseUrl = import.meta.env.VITE_SUPABASE_URL ?? DEFAULT_SUPABASE_URL;
 const supabaseKey =
-  import.meta.env.VITE_SUPABASE_PUBLISHABLE_KEY ?? import.meta.env.VITE_SUPABASE_ANON_KEY;
+  import.meta.env.VITE_SUPABASE_PUBLISHABLE_KEY ??
+  import.meta.env.VITE_SUPABASE_ANON_KEY ??
+  DEFAULT_SUPABASE_PUBLISHABLE_KEY;
 let supabaseClientPromise: Promise<import('@supabase/supabase-js').SupabaseClient | null> | null = null;
 
 function getSupabaseClient() {

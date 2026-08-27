@@ -52,3 +52,32 @@ create index if not exists demo_requests_created_at_idx
   on public.demo_requests (created_at desc);
 create index if not exists demo_requests_status_idx
   on public.demo_requests (status, created_at desc);
+create index if not exists demo_requests_email_created_at_idx
+  on public.demo_requests (lower(work_email), created_at desc);
+
+create or replace function public.enforce_demo_request_rate_limit()
+returns trigger
+language plpgsql
+security definer
+set search_path = pg_catalog, public
+as $$
+begin
+  if exists (
+    select 1
+    from public.demo_requests
+    where lower(work_email) = lower(new.work_email)
+      and created_at > now() - interval '15 minutes'
+  ) then
+    raise exception 'Please wait before submitting another request.';
+  end if;
+
+  return new;
+end;
+$$;
+
+revoke all on function public.enforce_demo_request_rate_limit() from public;
+
+drop trigger if exists demo_requests_rate_limit on public.demo_requests;
+create trigger demo_requests_rate_limit
+before insert on public.demo_requests
+for each row execute function public.enforce_demo_request_rate_limit();
