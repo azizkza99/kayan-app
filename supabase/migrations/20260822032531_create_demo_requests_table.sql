@@ -75,7 +75,7 @@ begin
 end;
 $$;
 
-revoke all on function public.enforce_demo_request_rate_limit() from public;
+revoke all on function public.enforce_demo_request_rate_limit() from public, anon, authenticated;
 
 drop trigger if exists demo_requests_rate_limit on public.demo_requests;
 create trigger demo_requests_rate_limit
