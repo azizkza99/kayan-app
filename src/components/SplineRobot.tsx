@@ -1,5 +1,6 @@
-import { createElement, useEffect, useRef, useState, type CSSProperties, type HTMLAttributes } from 'react';
+import { createElement, useEffect, useState, type CSSProperties, type HTMLAttributes } from 'react';
 import FloatingStars from './FloatingStars';
+import { useLanguage } from '@/i18n';
 
 const SPLINE_SCRIPT_URL = 'https://cdn.spline.design/@splinetool/viewer@2.0.5/build/spline-viewer.js';
 const SPLINE_SCENE_URL = 'https://prod.spline.design/UtIGpUYDM8e0S-cl/scene.splinecode';
@@ -13,13 +14,27 @@ function SplineViewer(props: SplineViewerProps) {
   return createElement('spline-viewer', props);
 }
 
+function supportsWebGL() {
+  try {
+    const canvas = document.createElement('canvas');
+    return Boolean(canvas.getContext('webgl2') ?? canvas.getContext('webgl'));
+  } catch {
+    return false;
+  }
+}
+
 export default function SplineRobot() {
-  const containerRef = useRef<HTMLDivElement>(null);
   const [loaded, setLoaded] = useState(false);
   const [failed, setFailed] = useState(false);
+  const { lang } = useLanguage();
+  const isArabic = lang === 'ar';
 
   useEffect(() => {
     if (!window.matchMedia('(min-width: 768px)').matches) return;
+    if (!supportsWebGL()) {
+      setFailed(true);
+      return;
+    }
 
     let mounted = true;
     let didLoad = false;
@@ -77,7 +92,6 @@ export default function SplineRobot() {
 
   return (
     <div
-      ref={containerRef}
       className="relative h-full w-full overflow-hidden rounded-[2rem] border border-gold-400/30 bg-[#111111] shadow-2xl glass transform-gpu group"
       style={{ minHeight: 'min(420px, 100vw)' }}
     >
@@ -95,7 +109,7 @@ export default function SplineRobot() {
             <div className="absolute inset-0 w-16 h-16 rounded-full border-t-2 border-gold-400 animate-spin" />
           </div>
           <p className="text-xs font-mono uppercase tracking-[0.2em] text-gold-400/80 animate-pulse">
-            INITIALIZING CORE...
+            {isArabic ? 'جارٍ تحميل العرض...' : 'Loading concept preview...'}
           </p>
         </div>
       )}
@@ -119,9 +133,13 @@ export default function SplineRobot() {
               />
             </svg>
           </div>
-          <p className="text-white text-sm font-semibold">Kayan concept</p>
+          <p className="text-white text-sm font-semibold">
+            {isArabic ? 'تصور كيان' : 'Kayan concept'}
+          </p>
           <p className="text-neutral-400 text-xs text-center max-w-xs">
-            The interactive 3D preview is temporarily unavailable
+            {isArabic
+              ? 'يعمل الموقع بالكامل حتى عندما لا يدعم الجهاز العرض ثلاثي الأبعاد.'
+              : 'The full site remains available when this device cannot render the 3D preview.'}
           </p>
         </div>
       )}
