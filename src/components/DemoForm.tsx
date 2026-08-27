@@ -1,5 +1,4 @@
 import { useState, type FormEvent } from 'react';
-import { createClient } from '@supabase/supabase-js';
 import {
   ArrowRight,
   CheckCircle2,
@@ -11,6 +10,21 @@ import {
 import { useLanguage } from '@/i18n';
 
 type SubmitState = 'idle' | 'loading' | 'success' | 'error';
+
+const supabaseUrl = import.meta.env.VITE_SUPABASE_URL;
+const supabaseKey =
+  import.meta.env.VITE_SUPABASE_PUBLISHABLE_KEY ?? import.meta.env.VITE_SUPABASE_ANON_KEY;
+let supabaseClientPromise: Promise<import('@supabase/supabase-js').SupabaseClient | null> | null = null;
+
+function getSupabaseClient() {
+  if (!supabaseUrl || !supabaseKey) return Promise.resolve(null);
+
+  supabaseClientPromise ??= import('@supabase/supabase-js').then(({ createClient }) =>
+    createClient(supabaseUrl, supabaseKey),
+  );
+
+  return supabaseClientPromise;
+}
 
 const TEAM_SIZES = [
   '1–50 employees',
@@ -25,8 +39,8 @@ export default function DemoForm() {
   const [orgType, setOrgType] = useState<'corporate' | 'government'>('corporate');
   const { lang } = useLanguage();
   const t = lang === 'ar' ? {
-    eyebrow: 'طلب عرض تجريبي', title: 'شاهد كيان', highlight: 'قيد العمل.', description: 'احجز جلسة مخصصة مع فريق المؤسسات. سنوضح لك كيف يتوافق كيان مع مسارات العمل الخاصة بمؤسستك.', organizationType: 'نوع الجهة', corporate: 'شركة', government: 'جهة حكومية', fullName: 'الاسم الكامل', workEmail: 'البريد الإلكتروني للعمل', organization: 'اسم الجهة', teamSize: 'حجم الفريق', select: 'اختر النطاق', message: 'أخبرنا عن احتياجاتك', messagePlaceholder: 'ما العمليات المكتبية التي ترغب في أتمتتها؟', submit: 'اطلب عرضك التجريبي', submitting: 'جارٍ الإرسال...', required: 'مطلوب', success: 'تم استلام الطلب', successText: 'شكراً لك. سيتواصل معك فريق المؤسسات خلال يوم عمل لتنسيق العرض المخصص.', another: 'إرسال طلب آخر', consent: 'بإرسال الطلب، توافق على أن يتواصل معك فريق كيان. بياناتك مستضافة داخل المملكة ولا تتم مشاركتها.', errorRequired: 'يرجى تعبئة جميع الحقول المطلوبة.', errorSubmit: 'حدث خطأ أثناء إرسال طلبك. يرجى المحاولة مرة أخرى.', sizes: ['موظف إلى 50', '51 إلى 200 موظف', '201 إلى 1,000 موظف', 'أكثر من 1,000 موظف']
-  } : { eyebrow: 'Request a Demo', title: 'See Kayan AI in', highlight: 'action.', description: "Book a personalized walkthrough with our enterprise team. We'll show you how Kayan fits your organization's specific workflows.", organizationType: 'Organization type', corporate: 'Corporate', government: 'Government', fullName: 'Full name', workEmail: 'Work email', organization: 'Organization', teamSize: 'Team size', select: 'Select range', message: 'Tell us about your needs', messagePlaceholder: 'What back-office processes would you like Kayan AI to automate?', submit: 'Request your demo', submitting: 'Submitting...', required: 'required', success: 'Request received', successText: 'Thank you. Our enterprise team will reach out within one business day to schedule your personalized demo.', another: 'Submit another request', consent: 'By submitting, you agree to be contacted by the Kayan AI team. Your data is hosted in-Kingdom and never shared.', errorRequired: 'Please fill in all required fields.', errorSubmit: 'Something went wrong submitting your request. Please try again.', sizes: TEAM_SIZES };
+    eyebrow: 'شاركنا حالة استخدام', title: 'حوّل فكرتك إلى', highlight: 'نموذج قابل للاختبار.', description: 'كيان حالياً نموذج منتج تجريبي. شاركنا العملية التي تريد تحسينها لنقيّم ملاءمتها لتجربة أولية محدودة وواضحة النطاق.', organizationType: 'نوع الجهة', corporate: 'شركة', government: 'جهة حكومية', fullName: 'الاسم الكامل', workEmail: 'البريد الإلكتروني للعمل', organization: 'اسم الجهة', teamSize: 'حجم الفريق', select: 'اختر النطاق', message: 'صف حالة الاستخدام', messagePlaceholder: 'ما العملية المكتبية التي تريد تبسيطها أو أتمتتها؟', submit: 'إرسال حالة الاستخدام', submitting: 'جارٍ الإرسال...', required: 'مطلوب', success: 'تم تسجيل طلبك', successText: 'شكراً لك. وصلتنا حالة الاستخدام بنجاح وسنراجع مدى ملاءمتها لتجربة أولية.', another: 'إرسال طلب آخر', consent: 'بإرسال النموذج، توافق على استخدام بياناتك للتواصل معك بخصوص طلبك فقط.', errorRequired: 'يرجى تعبئة جميع الحقول المطلوبة.', errorSubmit: 'تعذر إرسال الطلب. يرجى المحاولة مرة أخرى.', errorUnavailable: 'خدمة استقبال الطلبات غير مهيأة حالياً. يرجى المحاولة لاحقاً.', sizes: ['1 إلى 50 موظفاً', '51 إلى 200 موظف', '201 إلى 1,000 موظف', 'أكثر من 1,000 موظف'], namePlaceholder: 'الاسم الكامل', orgPlaceholder: 'اسم الشركة أو الجهة'
+  } : { eyebrow: 'Share a use case', title: 'Turn your idea into a', highlight: 'testable prototype.', description: 'Kayan is currently a product concept. Share the workflow you want to improve so we can assess it for a focused pilot.', organizationType: 'Organization type', corporate: 'Corporate', government: 'Government', fullName: 'Full name', workEmail: 'Work email', organization: 'Organization', teamSize: 'Team size', select: 'Select range', message: 'Describe the use case', messagePlaceholder: 'Which back-office workflow would you like to simplify or automate?', submit: 'Submit use case', submitting: 'Submitting...', required: 'required', success: 'Request recorded', successText: 'Thank you. Your use case was delivered successfully and will be reviewed for pilot fit.', another: 'Submit another request', consent: 'By submitting, you agree that your information may be used only to contact you about this request.', errorRequired: 'Please fill in all required fields.', errorSubmit: 'The request could not be sent. Please try again.', errorUnavailable: 'Request intake is not configured yet. Please try again later.', sizes: TEAM_SIZES, namePlaceholder: 'Full name', orgPlaceholder: 'Company or entity name' };
 
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -50,16 +64,13 @@ export default function DemoForm() {
     }
 
     try {
-      const supabaseUrl = import.meta.env.VITE_SUPABASE_URL;
-      const supabaseKey = import.meta.env.VITE_SUPABASE_ANON_KEY;
-
-      if (!supabaseUrl || !supabaseKey) {
-        await new Promise((resolve) => setTimeout(resolve, 1000));
-        setState('success');
+      const supabase = await getSupabaseClient();
+      if (!supabase) {
+        setState('error');
+        setErrorMsg(t.errorUnavailable);
         return;
       }
 
-      const supabase = createClient(supabaseUrl, supabaseKey);
       const { error } = await supabase.from('demo_requests').insert(payload);
 
       if (error) {
@@ -69,9 +80,10 @@ export default function DemoForm() {
       }
 
       setState('success');
-    } catch {
-      await new Promise((resolve) => setTimeout(resolve, 1000));
-      setState('success');
+    } catch (error) {
+      console.error('Use-case request submission failed', error);
+      setState('error');
+      setErrorMsg(t.errorSubmit);
     }
   };
 
@@ -109,7 +121,7 @@ export default function DemoForm() {
                   <CheckCircle2 className="w-10 h-10 text-gold-400" />
                 </div>
                 <div className="flex flex-col gap-2">
-                  <h3 className="text-2xl font-semibold text-white">Request received</h3>
+                  <h3 className="text-2xl font-semibold text-white">{t.success}</h3>
                   <p className="text-neutral-400 max-w-md">
                     {t.successText}
                   </p>
@@ -122,7 +134,7 @@ export default function DemoForm() {
                 </button>
               </div>
             ) : (
-              <form onSubmit={handleSubmit} className="flex flex-col gap-6">
+              <form onSubmit={handleSubmit} className="flex flex-col gap-6" aria-busy={state === 'loading'}>
                 {/* Organization type toggle */}
                 <div className="flex flex-col gap-3">
                   <label className="text-sm font-medium text-neutral-300">
@@ -187,7 +199,9 @@ export default function DemoForm() {
                       name="full_name"
                       type="text"
                       required
-                      placeholder="Ahmed Al-Rashid"
+                      placeholder={t.namePlaceholder}
+                      autoComplete="name"
+                      maxLength={120}
                       className="px-5 py-3.5 rounded-2xl bg-obsidian-800 border border-white/10 text-white placeholder:text-neutral-600 focus:border-gold-400/40 focus:outline-none focus:ring-2 focus:ring-gold-400/10 transition-all duration-300"
                     />
                   </div>
@@ -201,6 +215,8 @@ export default function DemoForm() {
                       type="email"
                       required
                       placeholder="ahmed@company.sa"
+                      autoComplete="email"
+                      maxLength={254}
                       className="px-5 py-3.5 rounded-2xl bg-obsidian-800 border border-white/10 text-white placeholder:text-neutral-600 focus:border-gold-400/40 focus:outline-none focus:ring-2 focus:ring-gold-400/10 transition-all duration-300"
                     />
                   </div>
@@ -217,7 +233,9 @@ export default function DemoForm() {
                       name="organization"
                       type="text"
                       required
-                      placeholder="Company or entity name"
+                      placeholder={t.orgPlaceholder}
+                      autoComplete="organization"
+                      maxLength={160}
                       className="px-5 py-3.5 rounded-2xl bg-obsidian-800 border border-white/10 text-white placeholder:text-neutral-600 focus:border-gold-400/40 focus:outline-none focus:ring-2 focus:ring-gold-400/10 transition-all duration-300"
                     />
                   </div>
@@ -254,13 +272,14 @@ export default function DemoForm() {
                     name="message"
                     rows={4}
                     placeholder={t.messagePlaceholder}
+                    maxLength={2000}
                     className="px-5 py-3.5 rounded-2xl bg-obsidian-800 border border-white/10 text-white placeholder:text-neutral-600 focus:border-gold-400/40 focus:outline-none focus:ring-2 focus:ring-gold-400/10 transition-all duration-300 resize-none"
                   />
                 </div>
 
                 {/* Error message */}
                 {state === 'error' && (
-                  <div className="flex items-center gap-3 px-5 py-3.5 rounded-2xl bg-red-500/10 border border-red-500/20 animate-fade-in">
+                  <div role="alert" aria-live="polite" className="flex items-center gap-3 px-5 py-3.5 rounded-2xl bg-red-500/10 border border-red-500/20 animate-fade-in">
                     <AlertCircle className="w-5 h-5 text-red-400 flex-shrink-0" />
                     <p className="text-sm text-red-300">{errorMsg}</p>
                   </div>
@@ -275,7 +294,7 @@ export default function DemoForm() {
                   {state === 'loading' ? (
                     <>
                       <Loader2 className="w-5 h-5 animate-spin" />
-                      Submitting...
+                      {t.submitting}
                     </>
                   ) : (
                     <>

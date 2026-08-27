@@ -17,80 +17,80 @@ const SECURITY_DATA: Record<'en' | 'ar', {
   items: SecurityPointItem[];
 }> = {
   en: {
-    eyebrow: 'Security & Governance',
-    title: 'Built for sovereign',
-    highlight: 'data and trust.',
-    description: 'Kayan AI is architected from the ground up to meet the stringent security and governance demands of Saudi government entities and enterprise corporations. Your data stays in-Kingdom, your models stay private, and your compliance stays intact.',
-    stats: ['In-Kingdom data', 'Monitoring', 'Aligned'],
+    eyebrow: 'Trust by design',
+    title: 'Clear principles,',
+    highlight: 'honest boundaries.',
+    description: 'This prototype demonstrates privacy-aware interface and database patterns; it is not a certified production platform. Hosting region, controls, integrations, and regulatory scope must be verified for each deployment.',
+    stats: ['Database guard', 'Arabic-first', 'Current status'],
     items: [
       {
         icon: Server,
-        title: 'In-Kingdom Hosting',
-        description: "All infrastructure runs within Saudi Arabia's sovereign data centers. Your data never leaves national borders.",
+        title: 'Deployment Requirements First',
+        description: 'Data residency and hosting constraints are documented and verified before any production architecture is selected.',
       },
       {
         icon: Lock,
-        title: 'End-to-End Encryption',
-        description: 'AES-256 encryption at rest and TLS 1.3 in transit. Every interaction is cryptographically secured.',
+        title: 'Least-Privilege Access',
+        description: 'The request table uses row-level security, and the browser receives only a public client key—not an administrative secret.',
       },
       {
         icon: FileCheck,
-        title: 'Full Audit Trails',
-        description: 'Every action Kayan takes is logged with timestamp, user context, and decision rationale — ready for any compliance review.',
+        title: 'Evidence Before Claims',
+        description: 'Performance, accuracy, and control claims should be measured during a scoped pilot before appearing in production messaging.',
       },
       {
         icon: Eye,
-        title: 'Role-Based Access Control',
-        description: 'Granular permissions ensure users only see and act on what their role permits, enforced at the data layer.',
+        title: 'Human Review Points',
+        description: 'Proposed workflows keep exceptions and consequential decisions visible to authorized reviewers.',
       },
       {
         icon: Scale,
-        title: 'Regulatory Compliance',
-        description: 'Aligned with NCA guidelines, PDPL requirements, and Saudi government data governance standards.',
+        title: 'Compliance Is Verified',
+        description: 'NCA, PDPL, and sector requirements need formal review and evidence; this concept does not claim certification.',
       },
       {
         icon: ShieldCheck,
-        title: 'Zero Data Retraining',
-        description: 'Your data is never used to train shared models. Each deployment maintains isolated, private model weights.',
+        title: 'Data Minimization',
+        description: 'Collect only what a pilot needs, define retention explicitly, and keep sensitive production data out of early prototypes.',
       },
     ],
   },
   ar: {
-    eyebrow: 'الأمان والحوكمة',
-    title: 'مصمم لبيانات',
-    highlight: 'سيادية وموثوقة.',
-    description: 'صُمم كيان من الأساس لتلبية متطلبات الأمان والحوكمة الصارمة للجهات الحكومية والشركات في المملكة. تبقى بياناتك داخل المملكة ونماذجك خاصة وامتثالك محفوظاً.',
-    stats: ['بيانات داخل المملكة', 'مراقبة مستمرة', 'متوافق'],
+    eyebrow: 'الثقة ضمن التصميم',
+    title: 'مبادئ واضحة،',
+    highlight: 'وحدود صريحة.',
+    description: 'يعرض هذا النموذج أنماطاً تراعي الخصوصية في الواجهة وقاعدة البيانات، لكنه ليس منصة إنتاجية معتمدة. يجب التحقق من منطقة الاستضافة والضوابط والتكاملات والنطاق التنظيمي لكل تنفيذ.',
+    stats: ['حماية قاعدة البيانات', 'العربية أولاً', 'الحالة الحالية'],
     items: [
       {
         icon: Server,
-        title: 'استضافة داخل المملكة',
-        description: 'تعمل البنية التحتية بالكامل داخل مراكز بيانات سيادية في المملكة، ولا تغادر بياناتك الحدود الوطنية.',
+        title: 'متطلبات النشر أولاً',
+        description: 'تُوثق قيود إقامة البيانات والاستضافة ويُتحقق منها قبل اختيار أي بنية إنتاجية.',
       },
       {
         icon: Lock,
-        title: 'تشفير شامل',
-        description: 'تشفير AES-256 للبيانات المخزنة وTLS 1.3 أثناء النقل يحمي كل تفاعل.',
+        title: 'أقل صلاحية ممكنة',
+        description: 'يستخدم جدول الطلبات سياسات أمان على مستوى الصف، ولا تصل للمتصفح أي مفاتيح إدارية سرية.',
       },
       {
         icon: FileCheck,
-        title: 'سجلات تدقيق كاملة',
-        description: 'يسجل كل إجراء مع الوقت وسياق المستخدم ومبررات القرار، جاهزاً لأي مراجعة امتثال.',
+        title: 'الدليل قبل الادعاء',
+        description: 'يجب قياس الأداء والدقة والضوابط في تجربة محددة النطاق قبل عرضها كوعود إنتاجية.',
       },
       {
         icon: Eye,
-        title: 'تحكم بالوصول حسب الدور',
-        description: 'تضمن الصلاحيات الدقيقة أن يرى المستخدمون ما يسمح به دورهم فقط.',
+        title: 'نقاط مراجعة بشرية',
+        description: 'تُبقي المسارات المقترحة الحالات الاستثنائية والقرارات المؤثرة ظاهرة للمراجعين المخولين.',
       },
       {
         icon: Scale,
-        title: 'امتثال تنظيمي',
-        description: 'متوافق مع إرشادات الهيئة الوطنية للأمن السيبراني ومتطلبات نظام حماية البيانات الشخصية.',
+        title: 'الامتثال يُثبت ولا يُفترض',
+        description: 'تتطلب متطلبات NCA وPDPL والقطاعات مراجعة وأدلة رسمية؛ ولا يدعي هذا التصور الحصول على اعتماد.',
       },
       {
         icon: ShieldCheck,
-        title: 'لا إعادة تدريب على البيانات',
-        description: 'لا تُستخدم بياناتك لتدريب نماذج مشتركة، ويحافظ كل نشر على عزلة أوزانه الخاصة.',
+        title: 'تقليل البيانات',
+        description: 'جمع ما تحتاجه التجربة فقط، وتحديد الاحتفاظ بوضوح، وإبعاد البيانات الحساسة عن النماذج المبكرة.',
       },
     ],
   },
@@ -134,15 +134,15 @@ export default function Security() {
             {/* Stats */}
             <div className="grid grid-cols-3 gap-4 pt-6">
               <div className="p-5 rounded-2xl glass border border-white/10 hover:border-gold-400/30 transition-all duration-300 transform-gpu group">
-                <div className="text-3xl font-bold gold-text tracking-tight group-hover:scale-105 transition-transform">100%</div>
+                <div className="text-3xl font-bold gold-text tracking-tight group-hover:scale-105 transition-transform">RLS</div>
                 <div className="text-xs text-neutral-400 mt-1 font-medium">{copy.stats[0]}</div>
               </div>
               <div className="p-5 rounded-2xl glass border border-white/10 hover:border-gold-400/30 transition-all duration-300 transform-gpu group">
-                <div className="text-3xl font-bold gold-text tracking-tight group-hover:scale-105 transition-transform">24/7</div>
+                <div className="text-3xl font-bold gold-text tracking-tight group-hover:scale-105 transition-transform">RTL</div>
                 <div className="text-xs text-neutral-400 mt-1 font-medium">{copy.stats[1]}</div>
               </div>
               <div className="p-5 rounded-2xl glass border border-white/10 hover:border-gold-400/30 transition-all duration-300 transform-gpu group">
-                <div className="text-3xl font-bold gold-text tracking-tight group-hover:scale-105 transition-transform">NCA</div>
+                <div className="text-3xl font-bold gold-text tracking-tight group-hover:scale-105 transition-transform">Pilot</div>
                 <div className="text-xs text-neutral-400 mt-1 font-medium">{copy.stats[2]}</div>
               </div>
             </div>

@@ -5,7 +5,6 @@ import HowItWorks from '@/components/HowItWorks';
 import Security from '@/components/Security';
 import DemoForm from '@/components/DemoForm';
 import Footer from '@/components/Footer';
-import TawkChat from '@/components/TawkChat'; // 👈 استيراد شات Tawk.to المجاني
 import LanguageProvider from '@/LanguageProvider';
 
 export default function App() {
@@ -21,9 +20,6 @@ export default function App() {
           <DemoForm />
         </main>
         <Footer />
-
-        {/* 🌟 نظام الدردشة الفورية Tawk.to المرتبط بحسابك */}
-        <TawkChat />
       </div>
     </LanguageProvider>
   );
