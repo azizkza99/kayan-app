@@ -1,30 +1,30 @@
-import { ArrowRight, Globe, Languages, Play, Shield, Sparkles, Cpu, Activity } from 'lucide-react';
+import { ArrowRight, Globe, Languages, Play, Shield, Sparkles, Activity } from 'lucide-react';
 import SplineRobot from './SplineRobot';
 import { useLanguage } from '@/i18n';
 
 const content = {
   en: {
-    badge: 'The Sovereign AI Standard for Saudi Enterprises',
-    line1: 'Your AI Business Concierge,',
-    line2: 'Sovereign Security,',
-    line3: '& Unmatched Scale.',
+    badge: 'Arabic-first enterprise automation concept',
+    line1: 'Explore a clearer way to',
+    line2: 'design, test, and improve',
+    line3: 'everyday business workflows.',
     description:
-      'Empowering government entities and enterprise leaders across the Kingdom with autonomous 24/7 back-office intelligence. Securely process complex documents and drive decisions — backed by 100% in-Kingdom data residency.',
-    requestDemo: 'Request Executive Briefing',
-    seeHow: 'Explore Architecture',
-    trust: ['100% In-Kingdom Data', 'Native Arabic & English', '24/7 Autonomous'],
+      'Kayan is an interactive product prototype for mapping repetitive office processes, shaping an automation pilot, and evaluating the experience before production investment.',
+    requestDemo: 'Share a Use Case',
+    seeHow: 'Explore the Concept',
+    trust: ['Privacy-aware design', 'Arabic & English interface', 'Pilot-first delivery'],
     langSwitchAria: 'Switch language to Arabic',
   },
   ar: {
-    badge: 'المنصة السيادية للجهات الحكومية والشركات الكبرى',
-    line1: 'مستشار أعمالك الذكي،',
-    line2: 'بسيادة سيبرانية مطلقة،',
-    line3: 'وكفاءة تشغيلية مستدامة.',
+    badge: 'تصور عربي أولاً لأتمتة أعمال المؤسسات',
+    line1: 'اكتشف طريقة أوضح',
+    line2: 'لتصميم واختبار وتحسين',
+    line3: 'مسارات العمل اليومية.',
     description:
-      'نُعيد صياغة مستقبل الكفاءة التشغيلية للجهات الحكومية والشركات الكبرى بالمملكة عبر منظومة ذكاء اصطناعي سيادية. معالجة المستندات، دعم القرار، واستضافة محلية بالكامل.',
-    requestDemo: 'طلب استشارة تنفيذية',
-    seeHow: 'استعراض المنظومة',
-    trust: ['استضافة سيادية بالمملكة', 'دعم أصيل للعربية والإنجليزية', 'أتمتة ذكية ومستمرة 24/7'],
+      'كيان نموذج منتج تفاعلي يساعد على توصيف العمليات المكتبية المتكررة، وصياغة تجربة أتمتة محدودة، وتقييم التجربة قبل الاستثمار في بناء نظام إنتاجي.',
+    requestDemo: 'شاركنا حالة استخدام',
+    seeHow: 'استكشف التصور',
+    trust: ['تصميم يراعي الخصوصية', 'واجهة عربية وإنجليزية', 'بدء تدريجي بنموذج تجريبي'],
     langSwitchAria: 'تغيير اللغة إلى الإنجليزية',
   },
 } as const;
@@ -40,6 +40,7 @@ export default function Hero() {
       lang={locale}
       dir={isArabic ? 'rtl' : 'ltr'}
       aria-labelledby="hero-heading"
+      id="top"
       className="relative isolate flex min-h-[100svh] items-center overflow-hidden bg-[#060606] pb-20 pt-28 sm:pb-24 sm:pt-32 lg:py-28 transform-gpu"
     >
       {/* Background Ambience Layers */}
@@ -110,7 +111,7 @@ export default function Hero() {
                   className="group relative px-8 py-4 rounded-2xl bg-gradient-to-r from-gold-400 via-gold-500 to-gold-600 text-neutral-950 font-bold overflow-hidden transition-all duration-300 hover:shadow-[0_0_30px_rgba(245,158,11,0.3)] hover:scale-[1.02] active:scale-[0.98] flex items-center justify-center gap-3 w-full sm:w-auto transform-gpu"
                 >
                   <span className="relative z-10 tracking-wide">{t.requestDemo}</span>
-                  <ArrowRight className={`relative z-10 w-4 h-4 group-hover:${isArabic ? '-translate-x-1' : 'translate-x-1'} transition-transform duration-300 ${isArabic ? 'rotate-180' : ''}`} />
+                  <ArrowRight className={`relative z-10 w-4 h-4 transition-transform duration-300 ${isArabic ? 'rotate-180 group-hover:-translate-x-1' : 'group-hover:translate-x-1'}`} />
                 </a>
                 
                 <a
@@ -150,7 +151,7 @@ export default function Hero() {
           </div>
 
           {/* Right Column (Elite 3D Container with Cyber HUD Borders) */}
-          <div className="relative w-full flex items-center justify-center transform-gpu">
+          <div className="relative hidden w-full items-center justify-center transform-gpu md:flex">
             {/* Glowing Backdrop Frame */}
             <div className="absolute -inset-2 rounded-[2.5rem] border border-gold-400/30 pointer-events-none bg-gradient-to-tr from-gold-400/10 via-gold-400/5 to-transparent blur-sm" />
             
@@ -160,7 +161,7 @@ export default function Hero() {
               <div className="absolute top-5 right-5 z-20 flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-black/70 border border-gold-400/30 backdrop-blur-md">
                 <Activity className="w-3.5 h-3.5 text-gold-400 animate-pulse" />
                 <span className="text-[10px] font-mono font-semibold text-gold-300 uppercase tracking-widest">
-                  SECURE_NODE_01
+                  CONCEPT_PREVIEW
                 </span>
               </div>
 

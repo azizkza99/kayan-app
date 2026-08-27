@@ -5,7 +5,7 @@ import { useLanguage } from '@/i18n';
 const NAV_LINKS = [
   { en: 'Capabilities', ar: 'الإمكانات', href: '#capabilities' },
   { en: 'How it Works', ar: 'آلية العمل', href: '#how-it-works' },
-  { en: 'Security', ar: 'الأمان', href: '#security' },
+  { en: 'Trust', ar: 'الثقة', href: '#security' },
   { en: 'Contact', ar: 'تواصل معنا', href: '#contact' },
 ];
 
@@ -13,11 +13,13 @@ export default function Navbar() {
   const [scrolled, setScrolled] = useState(false);
   const [mobileOpen, setMobileOpen] = useState(false);
   const { lang } = useLanguage();
-  const demoLabel = lang === 'ar' ? 'اطلب عرضاً تجريبياً' : 'Request a Demo';
+  const demoLabel = lang === 'ar' ? 'شارك حالة استخدام' : 'Share a Use Case';
+  const menuLabel = lang === 'ar' ? 'فتح قائمة التنقل' : 'Open navigation menu';
+  const closeMenuLabel = lang === 'ar' ? 'إغلاق قائمة التنقل' : 'Close navigation menu';
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 20);
-    window.addEventListener('scroll', onScroll);
+    window.addEventListener('scroll', onScroll, { passive: true });
     return () => window.removeEventListener('scroll', onScroll);
   }, []);
 
@@ -30,7 +32,7 @@ export default function Navbar() {
       <div className="max-w-7xl mx-auto px-6 lg:px-8">
         <div className="flex items-center justify-between h-20">
           {/* Logo */}
-          <a href="#" className="flex items-center gap-3 group">
+          <a href="#top" className="flex items-center gap-3 group" aria-label="Kayan AI">
             <div className="relative">
               <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-gold-400 to-gold-600 flex items-center justify-center glow-gold group-hover:glow-gold-strong transition-all duration-300">
                 <Sparkles className="w-5 h-5 text-obsidian-900" />
@@ -76,7 +78,9 @@ export default function Navbar() {
           <button
             className="md:hidden text-neutral-300 hover:text-white transition-colors"
             onClick={() => setMobileOpen(!mobileOpen)}
-            aria-label="Toggle menu"
+            aria-label={mobileOpen ? closeMenuLabel : menuLabel}
+            aria-expanded={mobileOpen}
+            aria-controls="mobile-navigation"
           >
             {mobileOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
           </button>
@@ -84,7 +88,7 @@ export default function Navbar() {
 
         {/* Mobile menu */}
         {mobileOpen && (
-          <div className="md:hidden glass-strong rounded-2xl mt-2 mb-4 p-6 flex flex-col gap-4 animate-fade-in-down">
+          <div id="mobile-navigation" className="md:hidden glass-strong rounded-2xl mt-2 mb-4 p-6 flex flex-col gap-4 animate-fade-in-down">
             {NAV_LINKS.map((link) => (
               <a
                 key={link.href}

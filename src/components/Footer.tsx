@@ -1,119 +1,100 @@
-import { Sparkles, Mail, Phone, MapPin, Linkedin, Twitter } from 'lucide-react';
+import { Github, Mail, Sparkles } from 'lucide-react';
 import { useLanguage } from '@/i18n';
 
-const FOOTER_LINKS = {
-  Platform: [
-    { en: 'Capabilities', ar: 'الإمكانات', href: '#capabilities' },
-    { en: 'How it Works', ar: 'آلية العمل', href: '#how-it-works' },
-    { en: 'Security', ar: 'الأمان', href: '#security' },
-  ],
-  Company: [
-    { en: 'About', ar: 'عن كيان', href: '#' },
-    { en: 'Contact', ar: 'تواصل معنا', href: '#contact' },
-    { en: 'Request a Demo', ar: 'طلب عرض تجريبي', href: '#contact' },
-  ],
-  Resources: [
-    { en: 'Documentation', ar: 'التوثيق', href: '#' },
-    { en: 'Compliance', ar: 'الامتثال', href: '#security' },
-    { en: 'Support', ar: 'الدعم', href: '#' },
-  ],
-};
+const NAV_LINKS = [
+  { en: 'Capabilities', ar: 'الإمكانات', href: '#capabilities' },
+  { en: 'Pilot approach', ar: 'منهج التجربة', href: '#how-it-works' },
+  { en: 'Trust principles', ar: 'مبادئ الثقة', href: '#security' },
+  { en: 'Share a use case', ar: 'شارك حالة استخدام', href: '#contact' },
+];
 
 export default function Footer() {
   const { lang } = useLanguage();
-  const labels = lang === 'ar' ? { platform: 'المنصة', company: 'الشركة', resources: 'المصادر', description: 'مستشار الأعمال الذكي للنخبة من الشركات والجهات الحكومية في المملكة العربية السعودية. مستقل، سيادي، ومتواجد دائماً.' } : { platform: 'Platform', company: 'Company', resources: 'Resources', description: 'The elite AI Business Concierge for corporate enterprises and government entities in Saudi Arabia. Autonomous, sovereign, always on.' };
-  return (
-    <footer className="relative bg-obsidian-950 border-t border-white/5 overflow-hidden">
-      <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[500px] h-[200px] bg-gold-400/5 rounded-full blur-[120px]" />
+  const isArabic = lang === 'ar';
+  const copy = isArabic
+    ? {
+        label: 'تصور منتج تجريبي',
+        description:
+          'نموذج واجهة عربي أولاً لاستكشاف أتمتة مسارات العمل. لا يمثل خدمة إنتاجية أو اعتماداً تنظيمياً.',
+        explore: 'استكشف',
+        project: 'المشروع',
+        source: 'عرض المستودع على GitHub',
+        email: 'التواصل مع صاحب المشروع',
+        rights: 'تصور كيان — مشروع تجريبي من عبدالعزيز أبوثريا.',
+      }
+    : {
+        label: 'Product concept',
+        description:
+          'An Arabic-first interface prototype for exploring workflow automation. It is not a production service or regulatory certification.',
+        explore: 'Explore',
+        project: 'Project',
+        source: 'View the repository on GitHub',
+        email: 'Contact the project owner',
+        rights: 'Kayan concept — an experimental project by Abdelaziz Abuthuraya.',
+      };
 
-      <div className="relative max-w-7xl mx-auto px-6 lg:px-8 py-16">
-        <div className="grid lg:grid-cols-5 gap-12">
-          {/* Brand column */}
-          <div className="lg:col-span-2 flex flex-col gap-6">
-            <div className="flex items-center gap-3">
-              <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-gold-400 to-gold-600 flex items-center justify-center glow-gold">
-                <Sparkles className="w-5 h-5 text-obsidian-900" />
+  return (
+    <footer className="relative overflow-hidden border-t border-white/5 bg-obsidian-950">
+      <div className="absolute left-1/2 top-0 h-[200px] w-[500px] -translate-x-1/2 rounded-full bg-gold-400/5 blur-[120px]" />
+
+      <div className="relative mx-auto max-w-7xl px-6 py-16 lg:px-8">
+        <div className="grid gap-12 lg:grid-cols-[1.5fr_1fr_1fr]">
+          <div className="flex flex-col gap-6">
+            <a href="#top" className="group flex w-fit items-center gap-3">
+              <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-gradient-to-br from-gold-400 to-gold-600 glow-gold">
+                <Sparkles className="h-5 w-5 text-obsidian-900" />
               </div>
               <div className="flex flex-col leading-none">
-                <span className="text-lg font-bold text-white tracking-tight">Kayan AI</span>
-                <span className="text-[10px] text-gold-400/70 tracking-[0.2em] uppercase font-medium">
-                  Business Concierge
+                <span className="text-lg font-bold tracking-tight text-white">Kayan AI</span>
+                <span className="text-[10px] font-medium uppercase tracking-[0.2em] text-gold-400/70">
+                  {copy.label}
                 </span>
               </div>
-            </div>
-
-            <p className="text-sm text-neutral-500 leading-relaxed max-w-sm">
-              {labels.description}
-            </p>
-
-            {/* Contact info */}
-            <div className="flex flex-col gap-3 mt-2">
-              <div className="flex items-center gap-3 text-sm text-neutral-400">
-                <Mail className="w-4 h-4 text-gold-400/60" />
-                <span>contact@kayan.ai</span>
-              </div>
-              <div className="flex items-center gap-3 text-sm text-neutral-400">
-                <Phone className="w-4 h-4 text-gold-400/60" />
-                <span dir="ltr">+966 11 000 0000</span>
-              </div>
-              <div className="flex items-center gap-3 text-sm text-neutral-400">
-                <MapPin className="w-4 h-4 text-gold-400/60" />
-                <span>Riyadh, Kingdom of Saudi Arabia</span>
-              </div>
-            </div>
+            </a>
+            <p className="max-w-md text-sm leading-relaxed text-neutral-500">{copy.description}</p>
           </div>
 
-          {/* Link columns */}
-          {Object.entries(FOOTER_LINKS).map(([title, links]) => (
-            <div key={title} className="flex flex-col gap-4">
-              <h4 className="text-sm font-semibold text-white tracking-wide">{labels[title.toLowerCase() as 'platform' | 'company' | 'resources']}</h4>
-              <ul className="flex flex-col gap-3">
-                {links.map((link) => (
-                  <li key={link.en}>
-                    <a
-                      href={link.href}
-                      className="text-sm text-neutral-500 hover:text-gold-400 transition-colors duration-200"
-                    >
-                      {link[lang]}
-                    </a>
-                  </li>
-                ))}
-              </ul>
-            </div>
-          ))}
+          <div className="flex flex-col gap-4">
+            <h2 className="text-sm font-semibold tracking-wide text-white">{copy.explore}</h2>
+            <ul className="flex flex-col gap-3">
+              {NAV_LINKS.map((link) => (
+                <li key={link.href}>
+                  <a
+                    href={link.href}
+                    className="text-sm text-neutral-500 transition-colors duration-200 hover:text-gold-400"
+                  >
+                    {link[lang]}
+                  </a>
+                </li>
+              ))}
+            </ul>
+          </div>
+
+          <div className="flex flex-col gap-4">
+            <h2 className="text-sm font-semibold tracking-wide text-white">{copy.project}</h2>
+            <a
+              href="https://github.com/azizkza99/kayan-app"
+              target="_blank"
+              rel="noreferrer"
+              className="flex items-center gap-3 text-sm text-neutral-500 transition-colors hover:text-gold-400"
+            >
+              <Github className="h-4 w-4" />
+              {copy.source}
+            </a>
+            <a
+              href="mailto:aziz.kza99@gmail.com"
+              className="flex items-center gap-3 text-sm text-neutral-500 transition-colors hover:text-gold-400"
+            >
+              <Mail className="h-4 w-4" />
+              {copy.email}
+            </a>
+          </div>
         </div>
 
-        {/* Bottom bar */}
-        <div className="mt-16 pt-8 border-t border-white/5 flex flex-col sm:flex-row items-center justify-between gap-6">
+        <div className="mt-16 border-t border-white/5 pt-8">
           <p className="text-xs text-neutral-600">
-            &copy; {new Date().getFullYear()} Kayan AI. All rights reserved.
+            &copy; {new Date().getFullYear()} {copy.rights}
           </p>
-
-          <div className="flex items-center gap-4">
-            <a
-              href="#"
-              className="w-9 h-9 rounded-xl glass flex items-center justify-center text-neutral-500 hover:text-gold-400 hover:border-gold-400/30 transition-all duration-300"
-              aria-label="LinkedIn"
-            >
-              <Linkedin className="w-4 h-4" />
-            </a>
-            <a
-              href="#"
-              className="w-9 h-9 rounded-xl glass flex items-center justify-center text-neutral-500 hover:text-gold-400 hover:border-gold-400/30 transition-all duration-300"
-              aria-label="Twitter"
-            >
-              <Twitter className="w-4 h-4" />
-            </a>
-          </div>
-
-          <div className="flex items-center gap-6">
-            <a href="#" className="text-xs text-neutral-600 hover:text-neutral-400 transition-colors">
-              Privacy Policy
-            </a>
-            <a href="#" className="text-xs text-neutral-600 hover:text-neutral-400 transition-colors">
-              Terms of Service
-            </a>
-          </div>
         </div>
       </div>
     </footer>
