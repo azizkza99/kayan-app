@@ -1,43 +1,52 @@
-# Kayan — Arabic-first workflow automation concept
+# Kayan — Arabic-First Workflow Automation
 
-Kayan is a bilingual product prototype for exploring enterprise workflow automation before investing in a production implementation. It demonstrates how a team can describe a repetitive process, shape a controlled pilot, and evaluate outcomes with clear boundaries.
+A bilingual workflow-automation product concept with a responsive React interface and a security-conscious Supabase inquiry path.
 
-> **Project status:** interactive concept and portfolio project. It is not a live AI service, a compliance certification, or a promise of a specific hosting region.
+**Live demo:** [kayan-app-henna.vercel.app](https://kayan-app-henna.vercel.app/)
 
-## What is implemented
+## Overview
 
-- Arabic-first interface with complete RTL/LTR switching
-- Responsive React experience with an optional desktop 3D scene
-- Clear pilot methodology and trust-by-design guidance
-- Real use-case submission through Supabase when environment variables are configured
-- Row-level security on the demo-request table
-- Accessible navigation, form states, and localized feedback
+Kayan helps teams explore repetitive-process automation before committing to a production implementation. It combines a structured pilot narrative, Arabic-first UX, localized use cases, and a real demo-request submission path when Supabase is configured.
 
-## Technology
+## Tech Stack
 
 - React 18 and TypeScript
-- Vite and Tailwind CSS
+- Vite 5
+- Tailwind CSS 3
 - Supabase JavaScript client
-- Spline web component for the desktop concept visual
-- Vercel hosting
+- PostgreSQL and Row Level Security
+- Spline web component
+- Vercel
 
-## Local development
+## Key Features
+
+- Complete Arabic/English RTL/LTR switching
+- Responsive interface with an optional desktop 3D scene
+- Structured automation-pilot methodology and use cases
+- Accessible navigation, localized form states, and feedback
+- Supabase-backed inquiry submission
+- Row Level Security, constrained public privileges, and duplicate-request throttling
+- Clear separation between implemented functionality and future product scope
+
+## Setup
 
 ```bash
+git clone https://github.com/azizkza99/kayan-app.git
+cd kayan-app
 npm ci
 npm run dev
 ```
 
-The hosted concept uses a Supabase publishable key protected by row-level security. For a fork or staging project, override the public defaults in `.env.local`:
+For a separate Supabase project, create `.env.local`:
 
-```bash
+```env
 VITE_SUPABASE_URL=https://your-project.supabase.co
 VITE_SUPABASE_PUBLISHABLE_KEY=your-public-publishable-key
 ```
 
-The legacy `VITE_SUPABASE_ANON_KEY` variable remains supported during migration. Publishable keys are designed for browser use; never expose a Supabase secret key or service-role key in a `VITE_` variable.
+Never expose a Supabase secret or service-role key in a `VITE_` variable.
 
-## Quality checks
+## Quality Checks
 
 ```bash
 npm run typecheck
@@ -46,12 +55,6 @@ npm run build
 npm audit --omit=dev
 ```
 
-## Security notes
+## Status
 
-The browser uses only a public Supabase key. Row-level security must remain enabled, and public roles should receive only the minimum table privileges required for form submission. The current schema throttles repeat submissions from the same email address; a production service should also add network-level bot protection, explicit retention rules, and a verified privacy notice.
-
-## Live concept
-
-[kayan-app-henna.vercel.app](https://kayan-app-henna.vercel.app/)
-
-Built by [Abdelaziz Abuthuraya](https://github.com/azizkza99).
+Interactive portfolio concept. It is not a live AI service or compliance certification; production use requires operational, privacy, security, and retention controls.
