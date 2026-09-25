@@ -11,7 +11,7 @@ Kayan helps teams explore repetitive-process automation before committing to a p
 ## Tech Stack
 
 - React 18 and TypeScript
-- Vite 5
+- Vite 8 and the React plugin 6
 - Tailwind CSS 3
 - Supabase JavaScript client
 - PostgreSQL and Row Level Security
@@ -29,6 +29,8 @@ Kayan helps teams explore repetitive-process automation before committing to a p
 - Clear separation between implemented functionality and future product scope
 
 ## Setup
+
+Use Node.js 20.19+ or 22.12+.
 
 ```bash
 git clone https://github.com/azizkza99/kayan-app.git
