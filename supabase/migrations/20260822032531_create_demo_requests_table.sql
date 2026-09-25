@@ -29,7 +29,8 @@ alter table public.demo_requests enable row level security;
 alter table public.demo_requests force row level security;
 
 revoke all on table public.demo_requests from anon, authenticated;
-grant insert on table public.demo_requests to anon, authenticated;
+grant insert (full_name, work_email, organization, organization_type, team_size, message)
+  on table public.demo_requests to anon, authenticated;
 
 drop policy if exists "anon_insert_demo_requests" on public.demo_requests;
 drop policy if exists "public_can_submit_use_case" on public.demo_requests;

@@ -46,6 +46,14 @@ VITE_SUPABASE_PUBLISHABLE_KEY=your-public-publishable-key
 
 Never expose a Supabase secret or service-role key in a `VITE_` variable.
 
+The frontend currently includes the project's public publishable key as a fallback. Forks should set both variables above so inquiries go to their own project. Apply the SQL files in `supabase/migrations/` in timestamp order; the latest migration limits browser inserts to the six form fields. Database-generated IDs, timestamps, and request status are not client-writable. The connected project must be active for submissions to succeed.
+
+## Project Structure
+
+- `src/components/DemoForm.tsx` validates and submits use cases from the browser.
+- `src/LanguageProvider.tsx` and `src/i18n.tsx` manage language and interface copy.
+- `supabase/migrations/` defines the request table, insert-only access, and column privileges.
+
 ## Quality Checks
 
 ```bash
